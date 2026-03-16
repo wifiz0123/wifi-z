@@ -1,78 +1,105 @@
-const STATUS_URL="http://10.10.10.1/status"
-const LOGOUT_URL="http://10.10.10.1/logout"
-const frame=document.getElementById("statusFrame")
-
 let remainingSeconds=0
-let hotspotConnected=false
-let alert5=false
-let alert1=false
 
-frame.src=STATUS_URL
+async function initNotifications(){
 
-function speak(text){
-  if(!("speechSynthesis" in window)) return
-  let msg=new SpeechSynthesisUtterance(text)
-  msg.lang="fr-FR"
-  speechSynthesis.speak(msg)
+if(!("Notification" in window)) return
+
+const permission=await Notification.requestPermission()
+
+if(permission!=="granted") return
+
 }
 
-function format(sec){
-  let h=Math.floor(sec/3600)
-  let m=Math.floor((sec%3600)/60)
-  let s=sec%60
-  return `${h}h ${m}m ${s}s`
+function sendNotification(message){
+
+if(!navigator.serviceWorker) return
+
+navigator.serviceWorker.ready.then(reg=>{
+
+if(reg.active){
+
+reg.active.postMessage({
+type:"notify",
+message:message
+})
+
 }
 
-function parseSeconds(str){
-  let w=str.match(/(\d+)w/), d=str.match(/(\d+)d/), h=str.match(/(\d+)h/),
-      m=str.match(/(\d+)m/), s=str.match(/(\d+)s/)
-  return (w?parseInt(w[1])*604800:0) + (d?parseInt(d[1])*86400:0) +
-         (h?parseInt(h[1])*3600:0) + (m?parseInt(m[1])*60:0) + (s?parseInt(s[1]):0)
+})
+
 }
 
-async function getStatus(){
-  try{
-    let r = await fetch(STATUS_URL,{cache:"no-store"})
-    let html = await r.text()
-    let match = html.match(/[0-9]+[wdhms]+/i)
-    if(match){
-      remainingSeconds = parseSeconds(match[0])
-      if(!hotspotConnected){
-        hotspotConnected=true
-        new Notification("wifi-z", { body:`Temps restant : ${format(remainingSeconds)}` })
-      }
-    }
-  }catch(e){
-    if(hotspotConnected){
-      hotspotConnected=false
-      frame.src=LOGOUT_URL
-    }
-  }
+function formatTime(sec){
+
+let m=Math.floor(sec/60)
+let s=sec%60
+
+return m+":"+(s<10?"0":"")+s
+
 }
 
-function countdown(){
-  if(!hotspotConnected || remainingSeconds<=0) return
-  remainingSeconds--
-  let minutes=Math.floor(remainingSeconds/60)
+function voice(text){
 
-  if(remainingSeconds%600===0){
-    new Notification("wifi-z",{ body:`Temps restant : ${format(remainingSeconds)}` })
-  }
+let msg=new SpeechSynthesisUtterance(text)
+msg.lang="fr-FR"
+speechSynthesis.speak(msg)
 
-  if(minutes<=5 && !alert5){
-    alert5=true
-    new Notification("wifi-z",{ body:"Moins de 5 minutes de connexion" })
-    speak("Attention. Il vous reste moins de cinq minutes")
-  }
-  if(minutes<=1 && !alert1){
-    alert1=true
-    new Notification("wifi-z",{ body:"Moins d'une minute de connexion" })
-    speak("Attention. Une minute restante")
-  }
 }
 
-if("Notification" in window) Notification.requestPermission()
+function startTimer(){
 
-setInterval(getStatus,60000)
-setInterval(countdown,1000)
-getStatus()
+setInterval(()=>{
+
+if(remainingSeconds<=0) return
+
+remainingSeconds--
+
+let min=Math.floor(remainingSeconds/60)
+
+if(min%10===0 && remainingSeconds%60===0){
+
+sendNotification("Temps restant : "+formatTime(remainingSeconds))
+
+}
+
+if(remainingSeconds===300){
+
+sendNotification("Temps restant : moins de 5 minutes")
+
+voice("Attention il vous reste moins de cinq minutes de connexion")
+
+}
+
+if(remainingSeconds===60){
+
+sendNotification("Temps restant : moins d'une minute")
+
+voice("Attention vous avez moins d'une minute de connexion")
+
+}
+
+},1000)
+
+}
+
+function openPortal(){
+
+let frame=document.getElementById("statusFrame")
+
+if(frame){
+frame.src="http://10.10.10.1/status"
+}
+
+}
+
+window.addEventListener("load",async()=>{
+
+await initNotifications()
+
+openPortal()
+
+remainingSeconds=3600
+
+startTimer()
+
+})
