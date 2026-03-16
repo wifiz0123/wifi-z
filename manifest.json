@@ -1,56 +1,56 @@
 {
-  "id": "/",
-  "name": "wifi-z",
-  "short_name": "wifi-z",
-  "description": "Application de suivi de connexion WIFI-Z avec notifications du temps restant",
-  "start_url": "./index.html",
-  "scope": "./",
-  "display": "standalone",
-  "orientation": "portrait",
-  "background_color": "#000000",
-  "theme_color": "#000000",
-  "lang": "fr",
+"id":"/",
+"name":"wifi-z",
+"short_name":"wifi-z",
+"description":"Application de suivi de connexion WIFI-Z",
+"start_url":"index.html",
+"scope":"./",
+"display":"standalone",
+"orientation":"portrait",
+"background_color":"#000000",
+"theme_color":"#000000",
+"lang":"fr",
 
-  "icons": [
-    {
-      "src": "img/icon72.png",
-      "sizes": "72x72",
-      "type": "image/png"
-    },
-    {
-      "src": "img/icon96.png",
-      "sizes": "96x96",
-      "type": "image/png"
-    },
-    {
-      "src": "img/icon128.png",
-      "sizes": "128x128",
-      "type": "image/png"
-    },
-    {
-      "src": "img/icon144.png",
-      "sizes": "144x144",
-      "type": "image/png"
-    },
-    {
-      "src": "img/icon152.png",
-      "sizes": "152x152",
-      "type": "image/png"
-    },
-    {
-      "src": "img/icon192.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "img/icon384.png",
-      "sizes": "384x384",
-      "type": "image/png"
-    },
-    {
-      "src": "img/icon512.png",
-      "sizes": "512x512",
-      "type": "image/png"
-    }
-  ]
+"icons":[
+{
+"src":"img/icon72.png",
+"sizes":"72x72",
+"type":"image/png"
+},
+{
+"src":"img/icon96.png",
+"sizes":"96x96",
+"type":"image/png"
+},
+{
+"src":"img/icon128.png",
+"sizes":"128x128",
+"type":"image/png"
+},
+{
+"src":"img/icon144.png",
+"sizes":"144x144",
+"type":"image/png"
+},
+{
+"src":"img/icon152.png",
+"sizes":"152x152",
+"type":"image/png"
+},
+{
+"src":"img/icon192.png",
+"sizes":"192x192",
+"type":"image/png"
+},
+{
+"src":"img/icon384.png",
+"sizes":"384x384",
+"type":"image/png"
+},
+{
+"src":"img/icon512.png",
+"sizes":"512x512",
+"type":"image/png"
+}
+]
 }
