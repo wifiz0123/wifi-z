@@ -1,12 +1,22 @@
 {
-  "name":"wifi-z",
-  "short_name":"wifi-z",
-  "start_url":"index.html",
-  "display":"standalone",
-  "background_color":"#000000",
-  "theme_color":"#000000",
-  "icons":[
-    {"src":"img/icon192.png","sizes":"192x192","type":"image/png"},
-    {"src":"img/icon512.png","sizes":"512x512","type":"image/png"}
+  "name": "wifi-z",
+  "short_name": "wifi-z",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "img/icon192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "img/icon512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
   ]
 }
